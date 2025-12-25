@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "PostUploader",
+  "version": "2.4",
+  "description": "自定义改请求头、构造上传请求包",
+  "permissions": ["storage", "activeTab", "tabs", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "devtools_page": "devtools.html"
+}

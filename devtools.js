@@ -1,0 +1,1 @@
+chrome.devtools.panels.create("PostUploader", null, "panel.html", null);

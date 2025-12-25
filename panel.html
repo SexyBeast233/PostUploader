@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    /* 核心调色板：柔和护眼 */
+    :root {
+      --bg: #ffffff; --card: #f8f9fa; --text: #2c3e50; --border: #e9ecef;
+      --primary: #4a90e2; --accent: #5cb85c; --code-bg: #fdfdfd; --code-text: #474949;
+    }
+    [data-theme="dark"] {
+      --bg: #1a1c1e; --card: #212427; --text: #d1d5db; --border: #333639;
+      --primary: #5da5fc; --accent: #74c476; --code-bg: #161b22; --code-text: #e6edf3;
+    }
+
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+    
+    /* 工具栏 */
+    .toolbar { display: flex; gap: 10px; padding: 12px; background: var(--card); border-bottom: 1px solid var(--border); align-items: center; }
+    .url-input { flex-grow: 1; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); outline: none; transition: border 0.3s; }
+    .url-input:focus { border-color: var(--primary); }
+
+    /* 配置区：控制在屏幕上半部分 */
+    .config-area { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; overflow-y: auto; max-height: 50vh; }
+    .section-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
+    h3 { margin: 0 0 10px 0; font-size: 11px; color: var(--primary); text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+
+    /* 响应区：底部，上下分栏形式 */
+    .res-area { height: 40vh; border-top: 2px solid var(--border); background: var(--bg); display: flex; flex-direction: column; }
+    .res-header { display: flex; justify-content: space-between; padding: 8px 15px; background: var(--card); border-bottom: 1px solid var(--border); font-size: 12px; }
+    .res-content-wrapper { flex: 1; overflow-y: auto; padding: 0 15px; position: relative; }
+    
+    /* 代码块样式：放弃黑绿，采用护眼调色 */
+    pre { background: var(--code-bg); color: var(--code-text); padding: 15px; border-radius: 6px; font-family: 'Consolas', monospace; font-size: 13px; line-height: 1.5; margin: 10px 0; position: relative; border: 1px solid var(--border); }
+    .truncated-hint { color: #f39c12; font-size: 11px; padding: 5px; text-align: center; border-bottom: 1px dashed var(--border); display: none; }
+
+    /* 通用组件 */
+    .row { display: flex; gap: 6px; margin-bottom: 6px; }
+    button { cursor: pointer; border: none; border-radius: 4px; font-size: 12px; transition: opacity 0.2s; }
+    button:hover { opacity: 0.8; }
+    .btn-main { background: var(--primary); color: white; padding: 8px 16px; font-weight: 600; }
+    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); padding: 4px 8px; }
+    .remove-btn { color: #e74c3c; background: transparent; padding: 0 5px; }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <button id="theme-toggle" class="btn-ghost">🌓</button>
+    <input type="text" id="target-url" class="url-input" placeholder="Enter endpoint URL...">
+    <button id="get-url" class="btn-ghost">获取当前URL</button>
+    <button id="exec-btn" class="btn-main">起飞！</button>
+  </div>
+
+  <div class="config-area">
+    <div class="section-card">
+      <h3>请求头 Headers <button id="add-header" class="btn-ghost" style="font-size:14px">+</button></h3>
+      <div id="header-list"></div>
+    </div>
+    <div class="section-card">
+      <h3>请求体 参数 <button id="add-param" class="btn-ghost" style="font-size:14px">+</button></h3>
+      <div id="param-list"></div>
+    </div>
+  </div>
+
+  <div class="res-area">
+    <div class="res-header">
+      <span id="status-tag">Status: Ready</span>
+      <div>
+        <button id="copy-res" class="btn-ghost" style="font-size: 10px;">Copy Full</button>
+        <button id="clear-res" class="btn-ghost" style="font-size: 10px;">Clear</button>
+      </div>
+    </div>
+    <div id="truncated-msg" class="truncated-hint">⚠️ 内容过长，已自动截取前 20 行，建议点击 Copy 按钮查看完整数据。</div>
+    <div class="res-content-wrapper">
+      <pre id="res-output">请求装填中ing... ...</pre>
+    </div>
+  </div>
+
+  <script src="panel.js"></script>
+</body>
+</html>
